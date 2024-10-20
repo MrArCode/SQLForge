@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.model.Table;
+
 import java.util.ArrayList;
 import java.util.List;
 

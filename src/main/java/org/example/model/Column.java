@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 public class Column {
     private String columnName;

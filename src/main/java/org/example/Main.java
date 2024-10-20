@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.model.Column;
+import org.example.model.Table;
+import org.example.model.Types;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
