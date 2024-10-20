@@ -1,0 +1,79 @@
+/projekt
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── org.example
+│   │   │       ├── model
+│   │   │       │   ├── Column.java
+│   │   │       │   ├── Table.java
+│   │   │       │   ├── Types.java
+│   │   │       │   ├── Constraint.java
+│   │   │       │   ├── Index.java
+│   │   │       │   ├── ForeignKey.java
+│   │   │       │   ├── Schema.java
+│   │   │       │   └── Relationship.java
+│   │   │       ├── generator
+│   │   │       │   ├── SQLGenerator.java
+│   │   │       │   ├── DataGenerator.java
+│   │   │       │   ├── FakerDataGenerator.java
+│   │   │       │   ├── ScriptBuilder.java
+│   │   │       │   ├── CRUDGenerator.java
+│   │   │       │   ├── QueryBuilder.java
+│   │   │       │   ├── MigrationGenerator.java
+│   │   │       │   ├── DialectSQLGenerator.java
+│   │   │       │   └── ConstraintGenerator.java
+│   │   │       ├── db
+│   │   │       │   ├── DatabaseConnection.java
+│   │   │       │   ├── TransactionManager.java
+│   │   │       │   ├── SchemaReader.java
+│   │   │       │   ├── SchemaMigrator.java
+│   │   │       │   └── DatabaseUtils.java
+│   │   │       ├── utils
+│   │   │       │   ├── Constants.java
+│   │   │       │   ├── Logger.java
+│   │   │       │   ├── Validator.java
+│   │   │       │   ├── ConfigLoader.java
+│   │   │       │   └── SecurityManager.java
+│   │   │       ├── cli
+│   │   │       │   ├── CommandLineInterface.java
+│   │   │       │   └── InteractiveShell.java
+│   │   │       ├── ui
+│   │   │       │   └── ApplicationUI.java
+│   │   │       ├── i18n
+│   │   │       │   ├── Messages_en.properties
+│   │   │       │   ├── Messages_pl.properties
+│   │   │       │   └── Messages_es.properties
+│   │   │       └── Main.java
+│   │   └── resources
+│   │       └── config.properties
+│   └── test
+│       └── java
+│           └── org.example
+│               ├── model
+│               │   ├── ColumnTest.java
+│               │   ├── TableTest.java
+│               │   └── SchemaTest.java
+│               ├── generator
+│               │   ├── SQLGeneratorTest.java
+│               │   ├── DataGeneratorTest.java
+│               │   └── MigrationGeneratorTest.java
+│               ├── db
+│               │   ├── DatabaseConnectionTest.java
+│               │   └── SchemaMigratorTest.java
+│               ├── utils
+│               │   ├── ValidatorTest.java
+│               │   └── ConfigLoaderTest.java
+│               └── cli
+│                   └── CommandLineInterfaceTest.java
+├── docs
+│   ├── README.md
+│   ├── UserGuide.md
+│   ├── DeveloperGuide.md
+│   └── API_Documentation.md
+├── build.gradle (lub pom.xml jeśli używasz Maven)
+├── settings.gradle
+└── .github
+└── workflows
+└── ci.yml
+
+

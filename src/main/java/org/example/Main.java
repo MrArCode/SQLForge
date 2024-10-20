@@ -46,7 +46,7 @@ public class Main {
                 .addTable(usersTable)
                 .addTable(ordersTable)
                 .includeCreate(true)
-                .includeInsert(true, 5)
+                .includeInsert(true, 10)
                 .withDataGenerator(dataGenerator)
                 .buildScript();
 
