@@ -56,6 +56,10 @@ public class CRUDGenerator {
         return create.toString();
     }
 
+    public static String generateRead(Table table) {
+        return "SELECT * FROM " + table.getTableName() + ";\n";
+    }
+
 
 
     private static String getSQLType(Types type) {

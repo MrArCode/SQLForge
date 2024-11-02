@@ -13,6 +13,8 @@ public class ScriptBuilder {
     private List<Table> tables = new ArrayList<>();
     private boolean includeCreate = false;
     private boolean includeInsert = false;
+    private boolean includeRead = false;
+    private boolean includeDrop = false;
     private int numberOfInserts = 0;
     private DataGenerator dataGenerator;
 
@@ -38,6 +40,11 @@ public class ScriptBuilder {
         return this;
     }
 
+    public ScriptBuilder includeRead(boolean includeRead) {
+        this.includeRead = includeRead;
+        return this;
+    }
+
     public ScriptBuilder withDataGenerator(DataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
         return this;
@@ -52,6 +59,10 @@ public class ScriptBuilder {
             }
             if (includeInsert && dataGenerator != null) {
                 script.append(table.generateInserts(numberOfInserts, dataGenerator)).append("\n");
+            }
+
+            if (includeRead && dataGenerator != null) {
+                script.append(CRUDGenerator.generateRead(table)).append("\n");
             }
         }
 
