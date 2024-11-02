@@ -48,7 +48,6 @@ public class Main {
                 .includeCreate(true)
                 .includeInsert(true, 10)
                 .includeRead(true)
-                .includeDrop(true)
                 .withDataGenerator(dataGenerator)
                 .buildScript();
 
