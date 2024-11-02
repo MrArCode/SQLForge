@@ -1,10 +1,14 @@
 package org.example.generator;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.model.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class ScriptBuilder {
     private List<Table> tables = new ArrayList<>();
     private boolean includeCreate = false;

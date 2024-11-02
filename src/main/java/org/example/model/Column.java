@@ -1,5 +1,10 @@
 package org.example.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Column {
     private String columnName;
     private Types dataType;
@@ -12,25 +17,6 @@ public class Column {
     public Column(String columnName, Types dataType) {
         this.columnName = columnName;
         this.dataType = dataType;
-    }
-
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public Column setColumnName(String columnName) {
-        this.columnName = columnName;
-        return this;
-    }
-
-    public Types getDataType() {
-        return dataType;
-    }
-
-    public Column setDataType(Types dataType) {
-        this.dataType = dataType;
-        return this;
     }
 
     public boolean isPrimaryKey() {
@@ -60,21 +46,8 @@ public class Column {
         return this;
     }
 
-    public String getForeignKeyReference() {
-        return foreignKeyReference;
-    }
-
     public Column setForeignKey(String foreignKeyReference) {
         this.foreignKeyReference = foreignKeyReference;
-        return this;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public Column setTableName(String tableName) {
-        this.tableName = tableName;
         return this;
     }
 }

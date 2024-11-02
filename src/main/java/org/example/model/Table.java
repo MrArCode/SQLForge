@@ -1,13 +1,18 @@
 package org.example.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.generator.DataGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Getter
+@Setter
 public class Table {
-    private String tableName;
-    private List<Column> columns = new ArrayList<>();
+    private final String tableName;
+    private final List<Column> columns = new ArrayList<>();
 
     public Table(String tableName) {
         this.tableName = tableName;
@@ -17,15 +22,6 @@ public class Table {
         column.setTableName(this.tableName);
         columns.add(column);
     }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public List<Column> getColumns() {
-        return columns;
-    }
-
 
     public String generateInserts(int numberOfRows, DataGenerator dataGenerator) {
         StringBuilder allInserts = new StringBuilder();
