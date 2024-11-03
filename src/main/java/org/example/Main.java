@@ -16,13 +16,17 @@ public class Main {
 
 
         Table usersTable = new Table("Users");
+
         usersTable.addColumn(new Column("ID", Types.INTEGER)
                 .setPrimaryKey(true)
                 .setNotNull(true));
+
         usersTable.addColumn(new Column("FirstName", Types.FIRSTNAME)
                 .setNotNull(true));
+
         usersTable.addColumn(new Column("LastName", Types.LASTNAME)
                 .setNotNull(true));
+
         usersTable.addColumn(new Column("Email", Types.EMAIL)
                 .setUnique(true)
                 .setNotNull(true));
@@ -32,9 +36,11 @@ public class Main {
         ordersTable.addColumn(new Column("OrderID", Types.INTEGER)
                 .setPrimaryKey(true)
                 .setNotNull(true));
+
         ordersTable.addColumn(new Column("UserID", Types.INTEGER)
                 .setForeignKey("Users(ID)")
                 .setNotNull(true));
+
         ordersTable.addColumn(new Column("OrderDate", Types.DATE_TIME)
                 .setNotNull(true));
 
@@ -45,11 +51,11 @@ public class Main {
         String script = ScriptBuilder.builder()
                 .addTable(usersTable)
                 .addTable(ordersTable)
-                .includeCreate(true)
-                .includeInsert(true, 10)
-                .includeRead(true)
-                .includeUpdate(true,10)
-                .includeDelete(true, 10)
+                .includeCreate()
+                .includeInsert( 10)
+                .includeRead()
+                .includeUpdate(10)
+                .includeDelete(10)
                 .withDataGenerator(dataGenerator)
                 .buildScript();
 

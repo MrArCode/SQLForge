@@ -13,43 +13,40 @@ public class CRUDGenerator {
         StringBuilder create = new StringBuilder();
         create.append("CREATE TABLE ").append(table.getTableName()).append(" (\n");
 
+        List<String> columnDefinitions = new ArrayList<>();
         List<String> primaryKeys = new ArrayList<>();
         List<String> foreignKeys = new ArrayList<>();
 
-        for (int i = 0; i < table.getColumns().size(); i++) {
-            Column column = table.getColumns().get(i);
-            create.append("  ").append(column.getColumnName()).append(" ")
+        for (Column column : table.getColumns()) {
+            StringBuilder columnDef = new StringBuilder();
+            columnDef.append("  ").append(column.getColumnName()).append(" ")
                     .append(getSQLType(column.getDataType()));
 
             if (column.isNotNull()) {
-                create.append(" NOT NULL");
+                columnDef.append(" NOT NULL");
             }
             if (column.isUnique()) {
-                create.append(" UNIQUE");
+                columnDef.append(" UNIQUE");
             }
+            columnDefinitions.add(columnDef.toString());
+
             if (column.isPrimaryKey()) {
                 primaryKeys.add(column.getColumnName());
             }
             if (column.getForeignKeyReference() != null) {
-                foreignKeys.add("FOREIGN KEY (" + column.getColumnName() + ") REFERENCES "
+                foreignKeys.add("  FOREIGN KEY (" + column.getColumnName() + ") REFERENCES "
                         + column.getForeignKeyReference());
             }
-
-            create.append(",");
-            create.append("\n");
         }
+
+        create.append(String.join(",\n", columnDefinitions));
 
         if (!primaryKeys.isEmpty()) {
-            create.append("  PRIMARY KEY (").append(String.join(", ", primaryKeys)).append("),\n");
+            create.append(",\n  PRIMARY KEY (").append(String.join(", ", primaryKeys)).append(")");
         }
 
-        for (String fk : foreignKeys) {
-            create.append("  ").append(fk).append(",\n");
-        }
-
-        int lastIndex = create.lastIndexOf(",");
-        if (lastIndex != -1) {
-            create.deleteCharAt(lastIndex);
+        if (!foreignKeys.isEmpty()) {
+            create.append(",\n").append(String.join(",\n", foreignKeys));
         }
 
         create.append("\n);");
@@ -63,45 +60,34 @@ public class CRUDGenerator {
     public static String generateUpdate(Table table, int numberOfUpdates, DataGenerator dataGenerator) {
         StringBuilder updateStatements = new StringBuilder();
 
+        List<Column> updatableColumns = new ArrayList<>();
+        for (Column column : table.getColumns()) {
+            if (!column.isPrimaryKey()) {
+                updatableColumns.add(column);
+            }
+        }
+
+        if (updatableColumns.isEmpty()) {
+            return "";
+        }
+
+        Column primaryKey = table.getPrimaryKeyColumn();
+        if (primaryKey == null) {
+            return "";
+        }
+
         for (int i = 0; i < numberOfUpdates; i++) {
             StringBuilder update = new StringBuilder();
             update.append("UPDATE ").append(table.getTableName()).append(" SET ");
 
-            List<Column> updatableColumns = new ArrayList<>();
-            for (Column column : table.getColumns()) {
-                if (!column.isPrimaryKey()) {
-                    updatableColumns.add(column);
-                }
+            List<String> setClauses = new ArrayList<>();
+            for (Column column : updatableColumns) {
+                String setClause = column.getColumnName() + " = " + dataGenerator.generateData(column);
+                setClauses.add(setClause);
             }
+            update.append(String.join(", ", setClauses));
 
-            if (updatableColumns.isEmpty()) {
-                continue;
-            }
-
-            for (int j = 0; j < updatableColumns.size(); j++) {
-                Column column = updatableColumns.get(j);
-                update.append(column.getColumnName()).append(" = ");
-
-
-                update.append(dataGenerator.generateData(column));
-                if (j < updatableColumns.size() - 1) {
-                    update.append(", ");
-                }
-            }
-
-            Column primaryKey = null;
-            for (Column column : table.getColumns()) {
-                if (column.isPrimaryKey()) {
-                    primaryKey = column;
-                    break;
-                }
-            }
-
-            if (primaryKey != null) {
-                update.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ");
-                update.append(i + 1);
-            }
-
+            update.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ").append(i + 1);
             update.append(";\n");
             updateStatements.append(update);
         }
@@ -109,32 +95,26 @@ public class CRUDGenerator {
         return updateStatements.toString();
     }
 
+
     public static String generateDelete(Table table, int numberOfDeletes) {
         StringBuilder deleteStatements = new StringBuilder();
 
+        Column primaryKey = table.getPrimaryKeyColumn();
+        if (primaryKey == null) {
+            return "";
+        }
+
         for (int i = 0; i < numberOfDeletes; i++) {
             StringBuilder delete = new StringBuilder();
-            delete.append("DELETE FROM ").append(table.getTableName());
-
-            Column primaryKey = null;
-            for (Column column : table.getColumns()) {
-                if (column.isPrimaryKey()) {
-                    primaryKey = column;
-                    break;
-                }
-            }
-
-            if (primaryKey != null) {
-                delete.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ");
-                delete.append(i + 1);
-            }
-
-            delete.append(";\n");
+            delete.append("DELETE FROM ").append(table.getTableName())
+                    .append(" WHERE ").append(primaryKey.getColumnName()).append(" = ").append(i + 1)
+                    .append(";\n");
             deleteStatements.append(delete);
         }
 
         return deleteStatements.toString();
     }
+
 
 
 

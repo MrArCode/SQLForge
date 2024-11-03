@@ -52,4 +52,14 @@ public class Table {
         }
         return allInserts.toString();
     }
+
+    public Column getPrimaryKeyColumn() {
+        for (Column column : columns) {
+            if (column.isPrimaryKey()) {
+                return column;
+            }
+        }
+        return null;
+    }
+
 }

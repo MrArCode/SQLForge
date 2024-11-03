@@ -1,20 +1,17 @@
 package org.example.generator;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.example.generator.CRUDGenerator;
+import org.example.generator.DataGenerator;
 import org.example.model.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 public class ScriptBuilder {
-    private List<Table> tables = new ArrayList<>();
+    private final List<Table> tables = new ArrayList<>();
     private boolean includeCreate = false;
     private boolean includeInsert = false;
     private boolean includeRead = false;
-    private boolean includeDrop = false;
     private boolean includeUpdate = false;
     private boolean includeDelete = false;
     private int numberOfInserts = 0;
@@ -33,32 +30,31 @@ public class ScriptBuilder {
         return this;
     }
 
-    public ScriptBuilder includeCreate(boolean includeCreate) {
-        this.includeCreate = includeCreate;
+    public ScriptBuilder includeCreate() {
+        this.includeCreate = true;
         return this;
     }
 
-    public ScriptBuilder includeRead(boolean includeRead) {
-        this.includeRead = includeRead;
+    public ScriptBuilder includeRead() {
+        this.includeRead = true;
         return this;
     }
 
-    public ScriptBuilder includeUpdate(boolean includeUpdate, int numberOfUpdates) {
-        this.includeUpdate = includeUpdate;
+    public ScriptBuilder includeInsert(int numberOfInserts) {
+        this.includeInsert = true;
+        this.numberOfInserts = numberOfInserts;
+        return this;
+    }
+
+    public ScriptBuilder includeUpdate(int numberOfUpdates) {
+        this.includeUpdate = true;
         this.numberOfUpdates = numberOfUpdates;
         return this;
     }
 
-    public ScriptBuilder includeDelete(boolean includeDelete, int numberOfDeletes) {
-        this.includeDelete = includeDelete;
+    public ScriptBuilder includeDelete(int numberOfDeletes) {
+        this.includeDelete = true;
         this.numberOfDeletes = numberOfDeletes;
-        return this;
-    }
-
-
-    public ScriptBuilder includeInsert(boolean includeInsert, int numberOfInserts) {
-        this.includeInsert = includeInsert;
-        this.numberOfInserts = numberOfInserts;
         return this;
     }
 
@@ -74,22 +70,27 @@ public class ScriptBuilder {
             if (includeCreate) {
                 script.append(CRUDGenerator.generateCreate(table)).append("\n\n");
             }
-            if (includeInsert && dataGenerator != null) {
+            if (includeInsert) {
+                if (dataGenerator == null) {
+                    throw new IllegalStateException("DataGenerator is required for INSERT statements.");
+                }
                 script.append(table.generateInserts(numberOfInserts, dataGenerator)).append("\n");
             }
-
-            if (includeRead && dataGenerator != null) {
+            if (includeRead) {
                 script.append(CRUDGenerator.generateRead(table)).append("\n");
             }
             if (includeUpdate) {
+                if (dataGenerator == null) {
+                    throw new IllegalStateException("DataGenerator is required for UPDATE statements.");
+                }
                 script.append(CRUDGenerator.generateUpdate(table, numberOfUpdates, dataGenerator)).append("\n");
             }
             if (includeDelete) {
                 script.append(CRUDGenerator.generateDelete(table, numberOfDeletes)).append("\n");
             }
-
         }
 
         return script.toString();
     }
+
 }
