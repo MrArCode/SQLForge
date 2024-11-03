@@ -19,6 +19,8 @@ To add SQLForge to your project using JitPack:
 
 ### Gradle
 
+[![](https://jitpack.io/v/MrArCode/SQLForge.svg)](https://jitpack.io/#MrArCode/SQLForge)
+
 ```kotlin
 repositories {
     maven { url = uri("https://jitpack.io") }
