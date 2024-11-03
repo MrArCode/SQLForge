@@ -48,6 +48,8 @@ public class Main {
                 .includeCreate(true)
                 .includeInsert(true, 10)
                 .includeRead(true)
+                .includeUpdate(true,10)
+                .includeDelete(true, 10)
                 .withDataGenerator(dataGenerator)
                 .buildScript();
 

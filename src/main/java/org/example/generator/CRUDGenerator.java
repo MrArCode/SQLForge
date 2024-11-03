@@ -60,6 +60,82 @@ public class CRUDGenerator {
         return "SELECT * FROM " + table.getTableName() + ";\n";
     }
 
+    public static String generateUpdate(Table table, int numberOfUpdates, DataGenerator dataGenerator) {
+        StringBuilder updateStatements = new StringBuilder();
+
+        for (int i = 0; i < numberOfUpdates; i++) {
+            StringBuilder update = new StringBuilder();
+            update.append("UPDATE ").append(table.getTableName()).append(" SET ");
+
+            List<Column> updatableColumns = new ArrayList<>();
+            for (Column column : table.getColumns()) {
+                if (!column.isPrimaryKey()) {
+                    updatableColumns.add(column);
+                }
+            }
+
+            if (updatableColumns.isEmpty()) {
+                continue;
+            }
+
+            for (int j = 0; j < updatableColumns.size(); j++) {
+                Column column = updatableColumns.get(j);
+                update.append(column.getColumnName()).append(" = ");
+
+
+                update.append(dataGenerator.generateData(column));
+                if (j < updatableColumns.size() - 1) {
+                    update.append(", ");
+                }
+            }
+
+            Column primaryKey = null;
+            for (Column column : table.getColumns()) {
+                if (column.isPrimaryKey()) {
+                    primaryKey = column;
+                    break;
+                }
+            }
+
+            if (primaryKey != null) {
+                update.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ");
+                update.append(i + 1);
+            }
+
+            update.append(";\n");
+            updateStatements.append(update);
+        }
+
+        return updateStatements.toString();
+    }
+
+    public static String generateDelete(Table table, int numberOfDeletes) {
+        StringBuilder deleteStatements = new StringBuilder();
+
+        for (int i = 0; i < numberOfDeletes; i++) {
+            StringBuilder delete = new StringBuilder();
+            delete.append("DELETE FROM ").append(table.getTableName());
+
+            Column primaryKey = null;
+            for (Column column : table.getColumns()) {
+                if (column.isPrimaryKey()) {
+                    primaryKey = column;
+                    break;
+                }
+            }
+
+            if (primaryKey != null) {
+                delete.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ");
+                delete.append(i + 1);
+            }
+
+            delete.append(";\n");
+            deleteStatements.append(delete);
+        }
+
+        return deleteStatements.toString();
+    }
+
 
 
     private static String getSQLType(Types type) {
