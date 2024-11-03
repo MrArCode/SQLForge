@@ -2,7 +2,9 @@
 
 SQLForge is a Java-based tool that generates SQL scripts for database operations, supporting **CRUD** (Create, Read, Update, Delete) operations. Using the **Faker** library, it creates realistic test data, making it ideal for database testing or automated data manipulation.
 
-<img src="src/main/resources/images/logo.webp" alt="SQLForge Overview" width="300" height="300">
+<div style="text-align: center;">
+    <img src="src/main/resources/images/logo.webp" alt="SQLForge Overview" width="300" height="300">
+</div>
 
 ## Features
 
