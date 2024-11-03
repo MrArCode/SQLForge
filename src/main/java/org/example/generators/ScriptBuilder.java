@@ -1,6 +1,6 @@
 package org.example.generators;
 
-import org.example.model.Table;
+import org.example.models.Table;
 
 import java.util.ArrayList;
 import java.util.List;

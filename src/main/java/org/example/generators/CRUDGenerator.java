@@ -1,8 +1,8 @@
 package org.example.generators;
 
-import org.example.model.Column;
-import org.example.model.Table;
-import org.example.model.Types;
+import org.example.models.Column;
+import org.example.models.Table;
+import org.example.models.Types;
 
 import java.util.ArrayList;
 import java.util.List;

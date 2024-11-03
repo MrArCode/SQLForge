@@ -1,8 +1,8 @@
 package org.example.generators;
 
 import com.github.javafaker.Faker;
-import org.example.model.Column;
-import org.example.model.Types;
+import org.example.models.Column;
+import org.example.models.Types;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

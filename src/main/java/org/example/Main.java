@@ -2,9 +2,9 @@ package org.example;
 
 import org.example.generators.FakerDataGenerator;
 import org.example.generators.ScriptBuilder;
-import org.example.model.Column;
-import org.example.model.Table;
-import org.example.model.Types;
+import org.example.models.Column;
+import org.example.models.Table;
+import org.example.models.Types;
 
 import java.io.BufferedWriter;
 import java.io.File;
