@@ -1,4 +1,4 @@
-package org.example.generator;
+package org.example.generators;
 
 import org.example.model.Column;
 

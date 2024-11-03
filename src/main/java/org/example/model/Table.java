@@ -2,7 +2,7 @@ package org.example.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.generator.DataGenerator;
+import org.example.generators.DataGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

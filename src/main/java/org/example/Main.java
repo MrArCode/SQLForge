@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.generator.FakerDataGenerator;
-import org.example.generator.ScriptBuilder;
+import org.example.generators.FakerDataGenerator;
+import org.example.generators.ScriptBuilder;
 import org.example.model.Column;
 import org.example.model.Table;
 import org.example.model.Types;

@@ -1,4 +1,4 @@
-package org.example.generator;
+package org.example.generators;
 
 import com.github.javafaker.Faker;
 import org.example.model.Column;

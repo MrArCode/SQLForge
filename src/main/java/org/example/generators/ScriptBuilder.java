@@ -1,7 +1,5 @@
-package org.example.generator;
+package org.example.generators;
 
-import org.example.generator.CRUDGenerator;
-import org.example.generator.DataGenerator;
 import org.example.model.Table;
 
 import java.util.ArrayList;
