@@ -86,22 +86,26 @@ public class CRUDGenerator {
 
 
 
+    // No default branch: the compiler checks that every value of Types has a SQL type.
     private static String getSQLType(Types type) {
         return switch (type) {
             case INTEGER -> "INT";
             case STRING, VARCHAR, TEXT, EMAIL, PHONENUMBER, ADDRESS, CITY, COUNTRY, ZIPCODE, COMPANY, JOBTITLE,
                  FIRSTNAME, LASTNAME, NAME, PASSWORD, IP_ADDRESS, UUID, HEX_COLOR, FILE_NAME, LOREM_SENTENCE,
-                 LOREM_PARAGRAPH, NATIONALITY, URL, USER_AGENT -> "VARCHAR(255)";
+                 NATIONALITY, URL, USER_AGENT, CREDIT_CARD, MAC_ADDRESS, IBAN, ISBN -> "VARCHAR(255)";
+            case LOREM_PARAGRAPH -> "TEXT";
+            case LATITUDE -> "DECIMAL(8,6)";
+            case LONGITUDE -> "DECIMAL(9,6)";
             case DATE -> "DATE";
             case DATE_TIME -> "DATETIME";
             case TIMESTAMP -> "TIMESTAMP";
+            case TIME -> "TIME";
             case FLOAT -> "FLOAT";
             case DOUBLE -> "DOUBLE";
             case BOOLEAN -> "BOOLEAN";
             case CHAR -> "CHAR(1)";
             case BLOB -> "BLOB";
             case CURRENCY_CODE -> "VARCHAR(3)";
-            default -> throw new IllegalArgumentException("Unknown SQL type for: " + type);
         };
     }
 }

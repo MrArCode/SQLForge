@@ -22,6 +22,7 @@ public class FakerDataGenerator implements DataGenerator {
     public String generateData(Column column) {
         Types type = column.getDataType();
 
+        // No default branch: the compiler checks that every value of Types has a generator.
         return switch (type) {
             case INTEGER -> String.valueOf(faker.number().numberBetween(1, 1000));
             case STRING, VARCHAR, TEXT -> "'" + faker.lorem().word().replace("'", "''") + "'";
@@ -69,7 +70,7 @@ public class FakerDataGenerator implements DataGenerator {
             case ISBN -> "'" + faker.code().isbn13().replace("'", "''") + "'";
             case CURRENCY_CODE -> "'" + faker.currency().code().replace("'", "''") + "'";
             case NATIONALITY -> "'" + faker.nation().nationality().replace("'", "''") + "'";
-            default -> "NULL";
+            case BLOB -> "NULL";
         };
     }
 

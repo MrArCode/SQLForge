@@ -190,20 +190,20 @@ The [`Types`](src/main/java/org/example/models/Types.java) enum controls both th
 | SQL type | `Types` values |
 | --- | --- |
 | `INT` | `INTEGER` |
-| `VARCHAR(255)` | `STRING`, `VARCHAR`, `TEXT`, `NAME`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONENUMBER`, `PASSWORD`, `USER_AGENT`, `HEX_COLOR`, `FILE_NAME`, `LOREM_SENTENCE`, `LOREM_PARAGRAPH`, `UUID`, `ADDRESS`, `CITY`, `COUNTRY`, `ZIPCODE`, `IP_ADDRESS`, `COMPANY`, `JOBTITLE`, `URL`, `NATIONALITY` |
+| `VARCHAR(255)` | `STRING`, `VARCHAR`, `TEXT`, `NAME`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONENUMBER`, `PASSWORD`, `USER_AGENT`, `HEX_COLOR`, `FILE_NAME`, `LOREM_SENTENCE`, `UUID`, `ADDRESS`, `CITY`, `COUNTRY`, `ZIPCODE`, `IP_ADDRESS`, `MAC_ADDRESS`, `COMPANY`, `JOBTITLE`, `URL`, `NATIONALITY`, `CREDIT_CARD`, `IBAN`, `ISBN` |
+| `TEXT` | `LOREM_PARAGRAPH` |
 | `VARCHAR(3)` | `CURRENCY_CODE` |
 | `CHAR(1)` | `CHAR` |
+| `DECIMAL(8,6)` | `LATITUDE` |
+| `DECIMAL(9,6)` | `LONGITUDE` |
 | `FLOAT` | `FLOAT` |
 | `DOUBLE` | `DOUBLE` |
 | `BOOLEAN` | `BOOLEAN` |
 | `DATE` | `DATE` |
 | `DATETIME` | `DATE_TIME` |
 | `TIMESTAMP` | `TIMESTAMP` |
+| `TIME` | `TIME` |
 | `BLOB` | `BLOB` (inserts `NULL` by default) |
-| *Data generation only* | `LATITUDE`, `LONGITUDE`, `CREDIT_CARD`, `TIME`, `MAC_ADDRESS`, `IBAN`, `ISBN` |
-
-> [!WARNING]
-> The types in the last row have no SQL type mapping in `CRUDGenerator` yet, so `includeCreate()` throws an `IllegalArgumentException` for them.
 
 ### API Reference
 

@@ -5,6 +5,8 @@ import org.example.models.Column;
 import org.example.models.Table;
 import org.example.models.Types;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -97,6 +99,23 @@ class ScriptBuilderTest {
         for (String script : List.of(builder.buildScript(), builder.buildScript(), withAnotherGenerator)) {
             assertTrue(script.contains("VALUES (1, "), script);
         }
+    }
+
+    @ParameterizedTest
+    @EnumSource(Types.class)
+    void everyTypeCanBeCreatedAndFilled(Types type) throws SQLException {
+        Table samples = new Table("Samples");
+        samples.addColumn(new Column("ID", Types.INTEGER).setPrimaryKey(true).setNotNull(true));
+        samples.addColumn(new Column("Sample", type));
+
+        String script = ScriptBuilder.builder()
+                .addTable(samples)
+                .includeCreate()
+                .includeInsert(50)
+                .withDataGenerator(new FakerDataGenerator())
+                .buildScript();
+
+        H2Database.run(script);
     }
 
     private static Table users() {
