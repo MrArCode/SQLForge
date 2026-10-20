@@ -66,7 +66,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Instead of writing dozens of `INSERT` statements by hand, **SQLForge** lets you define your database schema in Java using a clean, fluent API—complete with column types, primary keys, foreign keys, `NOT NULL`, and `UNIQUE` constraints. It then generates a ready-to-run SQL script with `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements populated by [Java Faker](https://github.com/DiUS/java-faker). Foreign keys automatically reference primary keys generated for parent tables, keeping relational data consistent out of the box.
+Instead of writing dozens of `INSERT` statements by hand, **SQLForge** lets you define your database schema in Java using a clean, fluent API—complete with column types, primary keys, foreign keys, `NOT NULL`, and `UNIQUE` constraints. It then generates a ready-to-run SQL script with `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements populated by [Datafaker](https://www.datafaker.net/). Foreign keys automatically reference primary keys generated for parent tables, keeping relational data consistent out of the box.
 
 SQLForge started in October 2024 during my university database coursework. Setting up practice schemas and coming up with believable test data by hand was easily the most tedious part of every assignment, so I built a tool to automate it. This was one of my first Java projects when I was learning the ropes as a programmer, and I'm currently refreshing and cleaning it up.
 
@@ -77,7 +77,7 @@ SQLForge started in October 2024 during my university database coursework. Setti
 * [![Java][Java-badge]][Java-url]
 * [![Gradle][Gradle-badge]][Gradle-url]
 * [![Lombok][Lombok-badge]][Lombok-url]
-* [![Java Faker][JavaFaker-badge]][JavaFaker-url]
+* [![Datafaker][Datafaker-badge]][Datafaker-url]
 * [![JUnit][JUnit-badge]][JUnit-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -244,7 +244,7 @@ All configuration setters return the `Column` instance for method chaining.
 
 #### `DataGenerator`
 
-Want to plug in your own data source instead of Java Faker? Implement the `DataGenerator` interface:
+Want to plug in your own data source instead of Datafaker? Implement the `DataGenerator` interface:
 
 ```java
 public interface DataGenerator {
@@ -299,7 +299,7 @@ Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Java Faker](https://github.com/DiUS/java-faker) for realistic test data generation
+* [Datafaker](https://www.datafaker.net/) for realistic test data generation
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -322,7 +322,7 @@ Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode
 [Gradle-url]: https://gradle.org/
 [Lombok-badge]: https://img.shields.io/badge/Lombok-BC4521?style=for-the-badge&logo=projectlombok&logoColor=white
 [Lombok-url]: https://projectlombok.org/
-[JavaFaker-badge]: https://img.shields.io/badge/Java_Faker-1F6FEB?style=for-the-badge
-[JavaFaker-url]: https://github.com/DiUS/java-faker
+[Datafaker-badge]: https://img.shields.io/badge/Datafaker-1F6FEB?style=for-the-badge
+[Datafaker-url]: https://www.datafaker.net/
 [JUnit-badge]: https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white
 [JUnit-url]: https://junit.org/

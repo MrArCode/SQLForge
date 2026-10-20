@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.javafaker:javafaker:1.0.2")
+    implementation("net.datafaker:datafaker:2.7.0")
 
     compileOnly("org.projectlombok:lombok:1.18.48")
     annotationProcessor("org.projectlombok:lombok:1.18.48")

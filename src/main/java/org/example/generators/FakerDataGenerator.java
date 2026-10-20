@@ -1,17 +1,22 @@
 package org.example.generators;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import org.example.models.Column;
 import org.example.models.Types;
 
-import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-// Numbers and dates are formatted with Locale.ROOT: SQL needs a decimal point, ASCII digits
+// Numbers and dates are formatted with Locale.ROOT and java.time: SQL needs a decimal point, ASCII digits
 // and the Gregorian calendar, whatever the system locale is.
 public class FakerDataGenerator implements DataGenerator {
+    private static final DateTimeFormatter DATE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
+    private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.ROOT);
+
     private final Faker faker;
 
     public FakerDataGenerator() {
@@ -27,14 +32,8 @@ public class FakerDataGenerator implements DataGenerator {
             case INTEGER -> String.valueOf(faker.number().numberBetween(1, 1000));
             case STRING, VARCHAR, TEXT -> "'" + faker.lorem().word().replace("'", "''") + "'";
             case CHAR -> "'" + faker.lorem().character() + "'";
-            case DATE -> {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
-                yield "'" + sdf.format(randomBirthday()) + "'";
-            }
-            case TIMESTAMP, DATE_TIME -> {
-                SimpleDateFormat sdfTimestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT);
-                yield "'" + sdfTimestamp.format(faker.date().past(1000, java.util.concurrent.TimeUnit.DAYS)) + "'";
-            }
+            case DATE -> "'" + faker.timeAndDate().birthday(18, 65) + "'";
+            case TIMESTAMP, DATE_TIME -> "'" + DATE_TIME.format(pastMoment()) + "'";
             case FLOAT -> String.valueOf(faker.number().randomDouble(2, 1, 1000));
             case DOUBLE -> String.valueOf(faker.number().randomDouble(5, 1, 100000));
             case BOOLEAN -> String.valueOf(faker.bool().bool());
@@ -57,27 +56,23 @@ public class FakerDataGenerator implements DataGenerator {
             case MAC_ADDRESS -> "'" + faker.internet().macAddress().replace("'", "''") + "'";
             case LATITUDE -> String.format(Locale.ROOT, "%.6f", faker.number().randomDouble(6, -90, 90));
             case LONGITUDE -> String.format(Locale.ROOT, "%.6f", faker.number().randomDouble(6, -180, 180));
-            case USER_AGENT -> "'" + faker.internet().userAgentAny().replace("'", "''") + "'";
-            case PASSWORD -> "'" + faker.internet().password().replace("'", "''") + "'";
+            case USER_AGENT -> "'" + faker.internet().userAgent().replace("'", "''") + "'";
+            case PASSWORD -> "'" + faker.credentials().password().replace("'", "''") + "'";
             case HEX_COLOR -> "'" + faker.color().hex().replace("'", "''") + "'";
             case FILE_NAME -> "'" + faker.file().fileName().replace("'", "''") + "'";
             case LOREM_SENTENCE -> "'" + faker.lorem().sentence().replace("'", "''") + "'";
             case LOREM_PARAGRAPH -> "'" + faker.lorem().paragraph().replace("'", "''") + "'";
-            case TIME -> {
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.ROOT);
-                yield "'" + timeFormat.format(randomBirthday()) + "'";
-            }
+            case TIME -> "'" + TIME.format(pastMoment()) + "'";
             case ISBN -> "'" + faker.code().isbn13().replace("'", "''") + "'";
-            case CURRENCY_CODE -> "'" + faker.currency().code().replace("'", "''") + "'";
+            case CURRENCY_CODE -> "'" + faker.money().currencyCode().replace("'", "''") + "'";
             case NATIONALITY -> "'" + faker.nation().nationality().replace("'", "''") + "'";
             case BLOB -> "NULL";
         };
     }
 
-    // Someone aged 18 to 65. Faker's own birthday() takes the current year from the default calendar,
-    // which is not Gregorian everywhere (in Thailand it is 543 years ahead).
-    private Date randomBirthday() {
-        ZonedDateTime now = ZonedDateTime.now();
-        return faker.date().between(Date.from(now.minusYears(65).toInstant()), Date.from(now.minusYears(18).toInstant()));
+    // A moment in the last 1000 days, in the system time zone.
+    private LocalDateTime pastMoment() {
+        Instant moment = faker.timeAndDate().past(1000, TimeUnit.DAYS);
+        return moment.atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
