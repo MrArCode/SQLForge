@@ -50,4 +50,9 @@ public class Column {
         this.foreignKeyReference = foreignKeyReference;
         return this;
     }
+
+    // "Users(ID)" -> "Users"
+    public String getReferencedTableName() {
+        return foreignKeyReference == null ? null : foreignKeyReference.split("\\(")[0].trim();
+    }
 }

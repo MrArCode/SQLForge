@@ -6,6 +6,7 @@ import org.example.models.Types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CRUDGenerator {
 
@@ -53,66 +54,33 @@ public class CRUDGenerator {
         return create.toString();
     }
 
+    public static String generateInsert(Table table, Map<Column, String> row) {
+        List<String> columnNames = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        for (Column column : table.getColumns()) {
+            columnNames.add(column.getColumnName());
+            values.add(row.get(column));
+        }
+        return "INSERT INTO " + table.getTableName() + " (" + String.join(", ", columnNames)
+                + ") VALUES (" + String.join(", ", values) + ");\n";
+    }
+
     public static String generateRead(Table table) {
         return "SELECT * FROM " + table.getTableName() + ";\n";
     }
 
-    public static String generateUpdate(Table table, int numberOfUpdates, DataGenerator dataGenerator) {
-        StringBuilder updateStatements = new StringBuilder();
-
-        List<Column> updatableColumns = new ArrayList<>();
-        for (Column column : table.getColumns()) {
-            if (!column.isPrimaryKey()) {
-                updatableColumns.add(column);
-            }
+    public static String generateUpdate(Table table, Map<Column, String> newValues, String primaryKeyValue) {
+        List<String> setClauses = new ArrayList<>();
+        for (Map.Entry<Column, String> entry : newValues.entrySet()) {
+            setClauses.add(entry.getKey().getColumnName() + " = " + entry.getValue());
         }
-
-        if (updatableColumns.isEmpty()) {
-            return "";
-        }
-
-        Column primaryKey = table.getPrimaryKeyColumn();
-        if (primaryKey == null) {
-            return "";
-        }
-
-        for (int i = 0; i < numberOfUpdates; i++) {
-            StringBuilder update = new StringBuilder();
-            update.append("UPDATE ").append(table.getTableName()).append(" SET ");
-
-            List<String> setClauses = new ArrayList<>();
-            for (Column column : updatableColumns) {
-                String setClause = column.getColumnName() + " = " + dataGenerator.generateData(column);
-                setClauses.add(setClause);
-            }
-            update.append(String.join(", ", setClauses));
-
-            update.append(" WHERE ").append(primaryKey.getColumnName()).append(" = ").append(i + 1);
-            update.append(";\n");
-            updateStatements.append(update);
-        }
-
-        return updateStatements.toString();
+        return "UPDATE " + table.getTableName() + " SET " + String.join(", ", setClauses)
+                + " WHERE " + table.getPrimaryKeyColumn().getColumnName() + " = " + primaryKeyValue + ";\n";
     }
 
-
-    public static String generateDelete(Table table, int numberOfDeletes) {
-        StringBuilder deleteStatements = new StringBuilder();
-
-        Column primaryKey = table.getPrimaryKeyColumn();
-        if (primaryKey == null) {
-            return "";
-        }
-
-        for (int i = 0; i < numberOfDeletes; i++) {
-            StringBuilder delete = new StringBuilder();
-            delete.append("DELETE FROM ").append(table.getTableName())
-                    .append(" WHERE ").append(primaryKey.getColumnName()).append(" = ").append(i + 1)
-                    .append(";\n");
-            deleteStatements.append(delete);
-        }
-
-        return deleteStatements.toString();
+    public static String generateDelete(Table table, String primaryKeyValue) {
+        return "DELETE FROM " + table.getTableName()
+                + " WHERE " + table.getPrimaryKeyColumn().getColumnName() + " = " + primaryKeyValue + ";\n";
     }
 
 

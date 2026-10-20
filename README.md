@@ -156,12 +156,6 @@ CREATE TABLE Users (
   PRIMARY KEY (ID)
 );
 
-INSERT INTO Users (ID, FirstName, Email) VALUES (1, 'Reynaldo', 'blondell.kovacek@gmail.com');
-INSERT INTO Users (ID, FirstName, Email) VALUES (2, 'Cliff', 'fritz.torphy@gmail.com');
-INSERT INTO Users (ID, FirstName, Email) VALUES (3, 'Candy', 'jere.considine@hotmail.com');
-
-SELECT * FROM Users;
-
 CREATE TABLE Orders (
   OrderID INT NOT NULL,
   UserID INT NOT NULL,
@@ -170,9 +164,15 @@ CREATE TABLE Orders (
   FOREIGN KEY (UserID) REFERENCES Users(ID)
 );
 
-INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (1, 2, '2026-03-07 18:05:32');
-INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (2, 2, '2024-12-22 11:43:08');
-INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (3, 2, '2025-01-05 11:48:35');
+INSERT INTO Users (ID, FirstName, Email) VALUES (1, 'Leonora', 'taylor.pagac@yahoo.com');
+INSERT INTO Users (ID, FirstName, Email) VALUES (2, 'Yolanda', 'roger.herzog@gmail.com');
+INSERT INTO Users (ID, FirstName, Email) VALUES (3, 'Deadra', 'alfredia.towne@hotmail.com');
+
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (1, 1, '2026-09-18 15:15:30');
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (2, 2, '2024-06-10 14:35:46');
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (3, 3, '2025-07-15 10:06:38');
+
+SELECT * FROM Users;
 
 SELECT * FROM Orders;
 ```
@@ -216,10 +216,12 @@ The [`Types`](src/main/java/org/example/models/Types.java) enum controls both th
 | `includeCreate()` | Includes `CREATE TABLE` statements with column constraints and keys. |
 | `includeInsert(int count)` | Generates `count` `INSERT` statements per table. |
 | `includeRead()` | Includes a `SELECT * FROM <table>;` query for each table. |
-| `includeUpdate(int count)` | Generates `count` `UPDATE` statements per table (requires a primary key). |
-| `includeDelete(int count)` | Generates `count` `DELETE` statements per table (requires a primary key). |
+| `includeUpdate(int count)` | Generates up to `count` `UPDATE` statements per table, one per inserted row (requires a primary key). |
+| `includeDelete(int count)` | Generates up to `count` `DELETE` statements per table, skipping rows that other rows still reference (requires a primary key). |
 | `withDataGenerator(DataGenerator generator)` | Sets the data provider used for `INSERT` and `UPDATE` statements. |
 | `buildScript()` | Builds and returns the full SQL script as a `String`. |
+
+The script lists all `CREATE TABLE` statements first, followed by every `INSERT`, `SELECT`, `UPDATE`, and `DELETE`. `DELETE` statements go through the tables in reverse order, so foreign keys stay valid.
 
 #### `Table`
 
@@ -250,7 +252,7 @@ public interface DataGenerator {
 }
 ```
 
-`generateData` is called for each column value and should return a valid SQL literal (such as a single-quoted string `'Alice'`, a number, or `NULL`).
+`generateData` is called for every column except primary and foreign keys, which SQLForge fills in itself, and should return a valid SQL literal (such as a single-quoted string `'Alice'`, a number, or `NULL`).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

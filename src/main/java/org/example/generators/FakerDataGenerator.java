@@ -5,14 +5,10 @@ import org.example.models.Column;
 import org.example.models.Types;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Locale;
 
 public class FakerDataGenerator implements DataGenerator {
     private final Faker faker;
-    private static final Map<String, AtomicInteger> idGenerators = new HashMap<>();
-    private final Map<String, List<String>> primaryKeyValues = new HashMap<>();
-    private final Random random = new Random();
 
     public FakerDataGenerator() {
         faker = new Faker(new Locale("en"));
@@ -21,22 +17,6 @@ public class FakerDataGenerator implements DataGenerator {
     @Override
     public String generateData(Column column) {
         Types type = column.getDataType();
-
-        if (column.isPrimaryKey()) {
-            AtomicInteger idGenerator = idGenerators.computeIfAbsent(column.getTableName(), _ -> new AtomicInteger(1));
-            String idValue = String.valueOf(idGenerator.getAndIncrement());
-            primaryKeyValues.computeIfAbsent(column.getTableName(), _ -> new ArrayList<>()).add(idValue);
-            return idValue;
-        } else if (column.getForeignKeyReference() != null) {
-            String[] refParts = column.getForeignKeyReference().split("\\(");
-            String refTableName = refParts[0];
-            List<String> refValues = primaryKeyValues.get(refTableName);
-            if (refValues != null && !refValues.isEmpty()) {
-                return refValues.get(random.nextInt(refValues.size()));
-            } else {
-                return "NULL";
-            }
-        }
 
         return switch (type) {
             case INTEGER -> String.valueOf(faker.number().numberBetween(1, 1000));
