@@ -1,8 +1,8 @@
-package org.example.generators;
+package io.github.mrarcode.sqlforge.generators;
 
 import net.datafaker.Faker;
-import org.example.models.Column;
-import org.example.models.Types;
+import io.github.mrarcode.sqlforge.models.Column;
+import io.github.mrarcode.sqlforge.models.Types;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
-package org.example.generators;
+package io.github.mrarcode.sqlforge.generators;
 
-import org.example.models.Column;
+import io.github.mrarcode.sqlforge.models.Column;
 
 public interface DataGenerator {
     /**

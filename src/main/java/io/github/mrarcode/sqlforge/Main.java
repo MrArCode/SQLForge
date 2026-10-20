@@ -1,10 +1,10 @@
-package org.example;
+package io.github.mrarcode.sqlforge;
 
-import org.example.generators.FakerDataGenerator;
-import org.example.generators.ScriptBuilder;
-import org.example.models.Column;
-import org.example.models.Table;
-import org.example.models.Types;
+import io.github.mrarcode.sqlforge.generators.FakerDataGenerator;
+import io.github.mrarcode.sqlforge.generators.ScriptBuilder;
+import io.github.mrarcode.sqlforge.models.Column;
+import io.github.mrarcode.sqlforge.models.Table;
+import io.github.mrarcode.sqlforge.models.Types;
 
 import java.io.IOException;
 import java.nio.file.Files;

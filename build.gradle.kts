@@ -14,7 +14,7 @@ java {
 }
 
 application {
-    mainClass = "org.example.Main"
+    mainClass = "io.github.mrarcode.sqlforge.Main"
 }
 
 repositories {

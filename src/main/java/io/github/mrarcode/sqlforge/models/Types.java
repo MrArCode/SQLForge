@@ -1,4 +1,4 @@
-package org.example.models;
+package io.github.mrarcode.sqlforge.models;
 
 public enum Types {
 

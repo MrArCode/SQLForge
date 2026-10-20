@@ -1,9 +1,9 @@
-package org.example.generators;
+package io.github.mrarcode.sqlforge.generators;
 
-import org.example.generators.H2Database.ExecutedStatement;
-import org.example.models.Column;
-import org.example.models.Table;
-import org.example.models.Types;
+import io.github.mrarcode.sqlforge.generators.H2Database.ExecutedStatement;
+import io.github.mrarcode.sqlforge.models.Column;
+import io.github.mrarcode.sqlforge.models.Table;
+import io.github.mrarcode.sqlforge.models.Types;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

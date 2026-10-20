@@ -115,11 +115,11 @@ Follow the steps below to get a local copy up and running.
 Define your tables, pick the SQL operations you need, and build the script:
 
 ```java
-import org.example.generators.FakerDataGenerator;
-import org.example.generators.ScriptBuilder;
-import org.example.models.Column;
-import org.example.models.Table;
-import org.example.models.Types;
+import io.github.mrarcode.sqlforge.generators.FakerDataGenerator;
+import io.github.mrarcode.sqlforge.generators.ScriptBuilder;
+import io.github.mrarcode.sqlforge.models.Column;
+import io.github.mrarcode.sqlforge.models.Table;
+import io.github.mrarcode.sqlforge.models.Types;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -179,7 +179,7 @@ SELECT * FROM Orders;
 
 ### Running the Demo
 
-[`Main.java`](src/main/java/org/example/Main.java) has a complete example that generates all CRUD operations (`CREATE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE`), prints the result to the console, and writes it to `output/script.sql`.
+[`Main.java`](src/main/java/io/github/mrarcode/sqlforge/Main.java) has a complete example that generates all CRUD operations (`CREATE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE`), prints the result to the console, and writes it to `output/script.sql`.
 
 Run it with Gradle:
 
@@ -187,11 +187,11 @@ Run it with Gradle:
 ./gradlew run
 ```
 
-You can also start `org.example.Main` from your IDE. The `output/` folder is created automatically if it doesn't exist.
+You can also start `io.github.mrarcode.sqlforge.Main` from your IDE. The `output/` folder is created automatically if it doesn't exist.
 
 ### Supported Column Types
 
-The [`Types`](src/main/java/org/example/models/Types.java) enum controls both the SQL column type used in `CREATE TABLE` and the kind of fake data generated for that column:
+The [`Types`](src/main/java/io/github/mrarcode/sqlforge/models/Types.java) enum controls both the SQL column type used in `CREATE TABLE` and the kind of fake data generated for that column:
 
 | SQL type | `Types` values |
 | --- | --- |

@@ -1,7 +1,7 @@
-package org.example.generators;
+package io.github.mrarcode.sqlforge.generators;
 
-import org.example.models.Column;
-import org.example.models.Table;
+import io.github.mrarcode.sqlforge.models.Column;
+import io.github.mrarcode.sqlforge.models.Table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
