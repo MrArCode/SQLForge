@@ -41,6 +41,12 @@ publishing {
     }
 }
 
+// JitPack rewrites Gradle module metadata and points its sources variant at the class jar.
+// With only the POM published, Gradle and IDEs find the sources by the -sources classifier.
+tasks.withType<GenerateModuleMetadata>().configureEach {
+    enabled = false
+}
+
 tasks.test {
     useJUnitPlatform()
     testLogging {
