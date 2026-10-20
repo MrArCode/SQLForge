@@ -181,7 +181,7 @@ SELECT * FROM Orders;
 
 [`Main.java`](src/main/java/org/example/Main.java) has a complete example that generates all CRUD operations (`CREATE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE`), prints the result to the console, and writes it to `output/script.sql`.
 
-Make sure the `output/` folder exists in the project root before running `org.example.Main` from your IDE.
+Run `org.example.Main` from your IDE. The `output/` folder is created automatically if it doesn't exist.
 
 ### Supported Column Types
 

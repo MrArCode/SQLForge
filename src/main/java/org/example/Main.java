@@ -6,10 +6,9 @@ import org.example.models.Column;
 import org.example.models.Table;
 import org.example.models.Types;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
@@ -61,9 +60,10 @@ public class Main {
 
         System.out.println(script);
 
-        String fileName = "output" + File.separator + "script.sql";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write(script);
+        Path outputFile = Path.of("output", "script.sql");
+        try {
+            Files.createDirectories(outputFile.getParent());
+            Files.writeString(outputFile, script);
         } catch (IOException e) {
             e.printStackTrace();
         }
