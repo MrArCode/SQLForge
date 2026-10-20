@@ -203,7 +203,7 @@ The [`Types`](src/main/java/org/example/models/Types.java) enum controls both th
 | *Data generation only* | `LATITUDE`, `LONGITUDE`, `CREDIT_CARD`, `TIME`, `MAC_ADDRESS`, `IBAN`, `ISBN` |
 
 > [!WARNING]
-> The types in the last row have no SQL type mapping in `CRUDGenerator` yet, so `includeCreate()` throws an `IllegalArgumentException` for them. `LATITUDE` and `LONGITUDE` values also follow the system locale: on systems that use a decimal comma (Polish, German, French and others) they come out as `-79,244199`, which breaks the `INSERT` statement.
+> The types in the last row have no SQL type mapping in `CRUDGenerator` yet, so `includeCreate()` throws an `IllegalArgumentException` for them.
 
 ### API Reference
 
