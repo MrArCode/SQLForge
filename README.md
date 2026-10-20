@@ -9,6 +9,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![JitPack][jitpack-shield]][jitpack-url]
+[![Build][build-shield]][build-url]
 
 </div>
 
@@ -342,6 +343,8 @@ Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode
 [license-url]: LICENSE
 [jitpack-shield]: https://img.shields.io/jitpack/version/com.github.MrArCode/SQLForge?style=for-the-badge
 [jitpack-url]: https://jitpack.io/#MrArCode/SQLForge
+[build-shield]: https://img.shields.io/github/actions/workflow/status/MrArCode/SQLForge/build.yml?branch=master&style=for-the-badge
+[build-url]: https://github.com/MrArCode/SQLForge/actions/workflows/build.yml
 
 [Java-badge]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Java-url]: https://openjdk.org/
