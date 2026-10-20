@@ -1,0 +1,323 @@
+<a id="readme-top"></a>
+
+<!-- PROJECT SHIELDS -->
+<div align="center">
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+</div>
+
+<!-- PROJECT LOGO / HEADER -->
+<br />
+<div align="center">
+  <h1 align="center">SQLForge</h1>
+
+  <p align="center">
+    A lightweight Java library for generating SQL scripts populated with realistic fake data.
+    <br />
+    <a href="#usage"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="#running-the-demo">View Demo</a>
+    &middot;
+    <a href="https://github.com/MrArCode/SQLForge/issues/new?labels=bug">Report Bug</a>
+    &middot;
+    <a href="https://github.com/MrArCode/SQLForge/issues/new?labels=enhancement">Request Feature</a>
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#running-the-demo">Running the Demo</a></li>
+        <li><a href="#supported-column-types">Supported Column Types</a></li>
+        <li><a href="#api-reference">API Reference</a></li>
+      </ul>
+    </li>
+    <li><a href="#project-status">Project Status</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+Instead of writing dozens of `INSERT` statements by hand, **SQLForge** lets you define your database schema in Java using a clean, fluent API—complete with column types, primary keys, foreign keys, `NOT NULL`, and `UNIQUE` constraints. It then generates a ready-to-run SQL script with `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements populated by [Java Faker](https://github.com/DiUS/java-faker). Foreign keys automatically reference primary keys generated for parent tables, keeping relational data consistent out of the box.
+
+SQLForge started in October 2024 during my university database coursework. Setting up practice schemas and coming up with believable test data by hand was easily the most tedious part of every assignment, so I built a tool to automate it. This was one of my first Java projects when I was learning the ropes as a programmer, and I'm currently refreshing and cleaning it up.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+* [![Java][Java-badge]][Java-url]
+* [![Gradle][Gradle-badge]][Gradle-url]
+* [![Lombok][Lombok-badge]][Lombok-url]
+* [![Java Faker][JavaFaker-badge]][JavaFaker-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Follow the steps below to get a local copy up and running.
+
+### Prerequisites
+
+* **JDK 22 or 23**
+
+> [!NOTE]
+> The codebase uses unnamed variables (`_`) introduced in Java 22, while the current Gradle 8.8 and Lombok 1.18.34 versions don't yet support JDK 24+. If your default `java` is on another version, point `JAVA_HOME` to JDK 22 or 23 when running Gradle.
+
+### Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/MrArCode/SQLForge.git
+   cd SQLForge
+   ```
+2. Build the project using the Gradle wrapper:
+   ```sh
+   ./gradlew build
+   ```
+   *(On Windows, run `gradlew.bat build` instead.)*
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Define your tables, pick the SQL operations you need, and build the script:
+
+```java
+import org.example.generators.FakerDataGenerator;
+import org.example.generators.ScriptBuilder;
+import org.example.models.Column;
+import org.example.models.Table;
+import org.example.models.Types;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+Table users = new Table("Users");
+users.addColumn(new Column("ID", Types.INTEGER).setPrimaryKey(true).setNotNull(true));
+users.addColumn(new Column("FirstName", Types.FIRSTNAME).setNotNull(true));
+users.addColumn(new Column("Email", Types.EMAIL).setUnique(true).setNotNull(true));
+
+Table orders = new Table("Orders");
+orders.addColumn(new Column("OrderID", Types.INTEGER).setPrimaryKey(true).setNotNull(true));
+orders.addColumn(new Column("UserID", Types.INTEGER).setForeignKey("Users(ID)").setNotNull(true));
+orders.addColumn(new Column("OrderDate", Types.DATE_TIME).setNotNull(true));
+
+String script = ScriptBuilder.builder()
+        .addTable(users)   // add parent tables before tables that reference them
+        .addTable(orders)
+        .includeCreate()
+        .includeInsert(3)
+        .includeRead()
+        .withDataGenerator(new FakerDataGenerator())
+        .buildScript();
+
+Files.writeString(Path.of("script.sql"), script);
+```
+
+This produces a `script.sql` file like the following (with fresh random data on every run):
+
+```sql
+CREATE TABLE Users (
+  ID INT NOT NULL,
+  FirstName VARCHAR(255) NOT NULL,
+  Email VARCHAR(255) NOT NULL UNIQUE,
+  PRIMARY KEY (ID)
+);
+
+INSERT INTO Users (ID, FirstName, Email) VALUES (1, 'Reynaldo', 'blondell.kovacek@gmail.com');
+INSERT INTO Users (ID, FirstName, Email) VALUES (2, 'Cliff', 'fritz.torphy@gmail.com');
+INSERT INTO Users (ID, FirstName, Email) VALUES (3, 'Candy', 'jere.considine@hotmail.com');
+
+SELECT * FROM Users;
+
+CREATE TABLE Orders (
+  OrderID INT NOT NULL,
+  UserID INT NOT NULL,
+  OrderDate DATETIME NOT NULL,
+  PRIMARY KEY (OrderID),
+  FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (1, 2, '2026-03-07 18:05:32');
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (2, 2, '2024-12-22 11:43:08');
+INSERT INTO Orders (OrderID, UserID, OrderDate) VALUES (3, 2, '2025-01-05 11:48:35');
+
+SELECT * FROM Orders;
+```
+
+### Running the Demo
+
+[`Main.java`](src/main/java/org/example/Main.java) has a complete example that generates all CRUD operations (`CREATE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE`), prints the result to the console, and writes it to `output/script.sql`.
+
+Make sure the `output/` folder exists in the project root before running `org.example.Main` from your IDE.
+
+### Supported Column Types
+
+The [`Types`](src/main/java/org/example/models/Types.java) enum controls both the SQL column type used in `CREATE TABLE` and the kind of fake data generated for that column:
+
+| SQL type | `Types` values |
+| --- | --- |
+| `INT` | `INTEGER` |
+| `VARCHAR(255)` | `STRING`, `VARCHAR`, `TEXT`, `NAME`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONENUMBER`, `PASSWORD`, `USER_AGENT`, `HEX_COLOR`, `FILE_NAME`, `LOREM_SENTENCE`, `LOREM_PARAGRAPH`, `UUID`, `ADDRESS`, `CITY`, `COUNTRY`, `ZIPCODE`, `IP_ADDRESS`, `COMPANY`, `JOBTITLE`, `URL`, `NATIONALITY` |
+| `VARCHAR(3)` | `CURRENCY_CODE` |
+| `CHAR(1)` | `CHAR` |
+| `FLOAT` | `FLOAT` |
+| `DOUBLE` | `DOUBLE` |
+| `BOOLEAN` | `BOOLEAN` |
+| `DATE` | `DATE` |
+| `DATETIME` | `DATE_TIME` |
+| `TIMESTAMP` | `TIMESTAMP` |
+| `BLOB` | `BLOB` (inserts `NULL` by default) |
+| *Data generation only* | `LATITUDE`, `LONGITUDE`, `CREDIT_CARD`, `TIME`, `MAC_ADDRESS`, `IBAN`, `ISBN` |
+
+> [!WARNING]
+> The types in the last row have no SQL type mapping in `CRUDGenerator` yet, so `includeCreate()` throws an `IllegalArgumentException` for them. `LATITUDE` and `LONGITUDE` values also follow the system locale: on systems that use a decimal comma (Polish, German, French and others) they come out as `-79,244199`, which breaks the `INSERT` statement.
+
+### API Reference
+
+#### `ScriptBuilder`
+
+| Method | Description |
+| --- | --- |
+| `ScriptBuilder.builder()` | Creates a new script builder instance. |
+| `addTable(Table table)` | Registers a table in the script. Tables are processed in the order they are added, so add referenced tables first. |
+| `includeCreate()` | Includes `CREATE TABLE` statements with column constraints and keys. |
+| `includeInsert(int count)` | Generates `count` `INSERT` statements per table. |
+| `includeRead()` | Includes a `SELECT * FROM <table>;` query for each table. |
+| `includeUpdate(int count)` | Generates `count` `UPDATE` statements per table (requires a primary key). |
+| `includeDelete(int count)` | Generates `count` `DELETE` statements per table (requires a primary key). |
+| `withDataGenerator(DataGenerator generator)` | Sets the data provider used for `INSERT` and `UPDATE` statements. |
+| `buildScript()` | Builds and returns the full SQL script as a `String`. |
+
+#### `Table`
+
+| Method | Description |
+| --- | --- |
+| `new Table(String tableName)` | Creates a table definition with the given name. |
+| `addColumn(Column column)` | Appends a column to the table. |
+
+#### `Column`
+
+All configuration setters return the `Column` instance for method chaining.
+
+| Method | Description |
+| --- | --- |
+| `new Column(String columnName, Types dataType)` | Defines a column with the given name and [type](#supported-column-types). |
+| `setPrimaryKey(boolean isPrimaryKey)` | Marks the column as a primary key (auto-generates sequential IDs starting at `1`). |
+| `setNotNull(boolean isNotNull)` | Adds a `NOT NULL` constraint. |
+| `setUnique(boolean isUnique)` | Adds a `UNIQUE` constraint. |
+| `setForeignKey(String reference)` | Links the column to another table's primary key (e.g., `"Users(ID)"`) and picks from already generated IDs. |
+
+#### `DataGenerator`
+
+Want to plug in your own data source instead of Java Faker? Implement the `DataGenerator` interface:
+
+```java
+public interface DataGenerator {
+    String generateData(Column column);
+}
+```
+
+`generateData` is called for each column value and should return a valid SQL literal (such as a single-quoted string `'Alice'`, a number, or `NULL`).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- PROJECT STATUS -->
+## Project Status
+
+SQLForge is under active development: the code is being cleaned up and fixed step by step, so the API and the generated SQL may still change.
+
+Found a bug or have an idea? [Open an issue](https://github.com/MrArCode/SQLForge/issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feat/amazing-feature`)
+3. Commit your Changes following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (`git commit -m 'feat: add support for PostgreSQL types'`)
+4. Push to the Branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+
+**MrArCode** – [@MrArCode](https://github.com/MrArCode)
+
+Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode/SQLForge)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Java Faker](https://github.com/DiUS/java-faker) for realistic test data generation
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[contributors-shield]: https://img.shields.io/github/contributors/MrArCode/SQLForge.svg?style=for-the-badge
+[contributors-url]: https://github.com/MrArCode/SQLForge/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/MrArCode/SQLForge.svg?style=for-the-badge
+[forks-url]: https://github.com/MrArCode/SQLForge/network/members
+[stars-shield]: https://img.shields.io/github/stars/MrArCode/SQLForge.svg?style=for-the-badge
+[stars-url]: https://github.com/MrArCode/SQLForge/stargazers
+[issues-shield]: https://img.shields.io/github/issues/MrArCode/SQLForge.svg?style=for-the-badge
+[issues-url]: https://github.com/MrArCode/SQLForge/issues
+[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
+[license-url]: LICENSE
+
+[Java-badge]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
+[Java-url]: https://openjdk.org/
+[Gradle-badge]: https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white
+[Gradle-url]: https://gradle.org/
+[Lombok-badge]: https://img.shields.io/badge/Lombok-BC4521?style=for-the-badge&logo=projectlombok&logoColor=white
+[Lombok-url]: https://projectlombok.org/
+[JavaFaker-badge]: https://img.shields.io/badge/Java_Faker-1F6FEB?style=for-the-badge
+[JavaFaker-url]: https://github.com/DiUS/java-faker
