@@ -78,6 +78,7 @@ SQLForge started in October 2024 during my university database coursework. Setti
 * [![Gradle][Gradle-badge]][Gradle-url]
 * [![Lombok][Lombok-badge]][Lombok-url]
 * [![Java Faker][JavaFaker-badge]][JavaFaker-url]
+* [![JUnit][JUnit-badge]][JUnit-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -321,3 +322,5 @@ Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode
 [Lombok-url]: https://projectlombok.org/
 [JavaFaker-badge]: https://img.shields.io/badge/Java_Faker-1F6FEB?style=for-the-badge
 [JavaFaker-url]: https://github.com/DiUS/java-faker
+[JUnit-badge]: https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white
+[JUnit-url]: https://junit.org/
