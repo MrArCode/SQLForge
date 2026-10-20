@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("application")
     id("maven-publish")
 }
 
@@ -10,6 +11,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+application {
+    mainClass = "org.example.Main"
 }
 
 repositories {
