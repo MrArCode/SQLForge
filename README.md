@@ -8,6 +8,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![JitPack][jitpack-shield]][jitpack-url]
 
 </div>
 
@@ -43,6 +44,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#add-to-your-project">Add to Your Project</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
@@ -85,9 +87,26 @@ SQLForge started in October 2024 during my university database coursework. Setti
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Follow the steps below to get a local copy up and running.
+### Add to Your Project
+
+SQLForge is published on [JitPack](https://jitpack.io/#MrArCode/SQLForge). Add the JitPack repository and the dependency to your `build.gradle.kts`:
+
+```kotlin
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.MrArCode:SQLForge:v0.2.0")
+}
+```
+
+SQLForge needs Java 25 or newer. Snippets for Maven and other build tools are on the [JitPack page](https://jitpack.io/#MrArCode/SQLForge).
 
 ### Prerequisites
+
+To build SQLForge from source, follow the steps below. You need:
 
 * **Java 8 or newer** to start the Gradle wrapper
 
@@ -321,6 +340,8 @@ Project Link: [https://github.com/MrArCode/SQLForge](https://github.com/MrArCode
 [issues-url]: https://github.com/MrArCode/SQLForge/issues
 [license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
 [license-url]: LICENSE
+[jitpack-shield]: https://img.shields.io/jitpack/version/com.github.MrArCode/SQLForge?style=for-the-badge
+[jitpack-url]: https://jitpack.io/#MrArCode/SQLForge
 
 [Java-badge]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Java-url]: https://openjdk.org/
