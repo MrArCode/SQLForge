@@ -88,10 +88,10 @@ Follow the steps below to get a local copy up and running.
 
 ### Prerequisites
 
-* **JDK 22 or 23**
+* **Java 8 or newer** to start the Gradle wrapper
 
 > [!NOTE]
-> The codebase uses unnamed variables (`_`) introduced in Java 22, while the current Gradle 8.8 and Lombok 1.18.34 versions don't yet support JDK 24+. If your default `java` is on another version, point `JAVA_HOME` to JDK 22 or 23 when running Gradle.
+> The project is compiled with Java 25. Gradle uses a JDK 25 that it finds on your machine or downloads one automatically, so you don't need to change `JAVA_HOME`.
 
 ### Installation
 
